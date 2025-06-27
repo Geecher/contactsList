@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Стартовый шаблон | ВебКадеми</title>
+		<title>Contact List&#160;&#8212; тестовый проект</title>
 		<link rel="stylesheet" href="./css/main.css" />
 
 		<link rel="icon" type="image/x-icon" href="./img/favicons/favicon.svg" />
@@ -15,7 +15,7 @@
 		<header class="header">
 			<div class="container">
 				<div class="header__row">
-					<div class="logo">ВебКадеми</div>
+					<div class="logo">Contacts List</div>
 					<nav class="header__nav nav">
 						<ul class="nav__list">
 							<li><a href="index.html" class="active">Главная</a></li>
@@ -36,18 +36,17 @@
 		</div>
 
 		<main class="docs">
-			<section>
+			<section class="form">
 				<div class="container">
-					<h1 class="title-1">Gulp сборка для верстки сайтов</h1>
-					<p>Понятная Gulp сборка которая ускорит твою верстку в&#160;разы.</p>
-					<p>Документация по&#160;возможностям с&#160;примерами использования <a href="./docs.html">здесь</a>.</p>
-
-					<!-- Теги img теперь можно писать в несколько строк, ошибки не будет -->
-					<picture>
-						<source srcset="./img/project-02.webp 1x, ./img/project-02@2x.webp 2x" type="image/webp" />
-						<source srcset="./img/project-02.jpg 1x, ./img/project-02@2x.jpg 2x" type="image/jpeg" />
-						<img src="./img/project-02.jpg" alt="" />
-					</picture>
+					<h1 class="title-1 text-center">Contact List</h1>
+					<form action="" autocomplete="on">
+						<input type="text" name="name" id="name" placeholder="Name" tabindex="1" required />
+						<input type="text" name="vacancy" id="vacancy" placeholder="Vacancy" tabindex="2" required />
+						<input type="tel" name="phone" id="phone" placeholder="Phone +7 999 999 99 99" tabindex="3" required />
+						<button type="submit" id="add">add</button>
+						<button type="submit" id="clear">clear list</button>
+						<button type="submit" id="search">search</button>
+					</form>
 				</div>
 			</section>
 		</main>
@@ -55,6 +54,7 @@
 			<div class="container">
 				<div class="footer__copyright">
 					<p>Сборка сделана в&#160;школе <a href="https://webcademy.ru" target="_blank">webcademy.ru</a></p>
+					<p>Ссылка на&#160;репозиторий <a href="https://github.com/Geecher/contactsList" target="_blank">github.com</a></p>
 				</div>
 			</div>
 		</footer>

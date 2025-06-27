@@ -8,6 +8,8 @@
 
 	--page-bg: #fff;
 	--text-color: #000;
+	--color-border: #252526;
+	--hover: #0c79dc;
 	--accent: #ac182c;
 	--link-color: #2578c8;
 
@@ -20,4 +22,5 @@
 .dark {
     --page-bg: #252526;
     --text-color: #fff;
+	--color-border: #fff;
 }
