@@ -38,3 +38,19 @@
 .flex-center {
 	justify-content: center;
 }
+
+.fadeOut {
+	animation: fadeOut 4s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
