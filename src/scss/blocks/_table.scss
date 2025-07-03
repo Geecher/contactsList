@@ -1,28 +1,32 @@
 .table-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   & .table__column {
     flex: 1;
-  }
-
-  & .column__element {
-    padding: 0.7rem;
-    border: 1px solid var(--color-border);
-    background: var(--background);
   }
 
   & .element {
     & .element__letter {
       display: flex;
       justify-content: space-between;
-    }
+      padding: 0.7rem;
+      border: 1px solid var(--color-border);
+      background: var(--background);
 
-    &:has(.element__counter) {
-      cursor: pointer;
-      background: var(--background-active);
+      &:has(.element__counter) {
+        cursor: pointer;
+        background: var(--background-active);
+      }
+
+      & + .element__contact {
+        display: none;
+      }
+
+      &.active + .element__contact {
+        display: block;
+      }
     }
   }
-
 }
