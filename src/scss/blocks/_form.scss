@@ -30,5 +30,16 @@ form {
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.9rem;
-  margin-top: 0.8rem;
+  height: 5rem;
+  overflow: hidden;
+}
+
+#success {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  height: 5rem;
+  overflow: hidden;
 }

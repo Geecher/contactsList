@@ -47,6 +47,7 @@
 		"@fancyapps/fancybox": "^3.5.7",
 		"@fancyapps/ui": "^5.0.35",
 		"avif-webp-checker": "^1.0.0",
+		"inputmask": "^5.0.9",
 		"swiper": "^11.0.6"
 	}
 }

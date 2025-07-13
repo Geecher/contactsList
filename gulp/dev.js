@@ -212,7 +212,6 @@ gulp.task('js:dev', function () {
 });
 
 const serverOptions = {
-	host: '127.0.0.1',
 	livereload: true,
 	open: true,
 };

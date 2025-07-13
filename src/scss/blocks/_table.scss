@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  & .table__column {
+  .table__column {
     flex: 1;
   }
 
@@ -20,13 +20,16 @@
         background: var(--background-active);
       }
 
-      & + .element__contact {
-        display: none;
-      }
-
-      &.active + .element__contact {
+      &.active ~ .element__contact {
         display: block;
       }
     }
+
+    .element__contact {
+      display: none;
+      padding: 0.7rem;
+      border: 1px solid var(--color-border);
+    }
+
   }
 }

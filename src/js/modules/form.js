@@ -1,19 +1,34 @@
+import Inputmask from "inputmask";
+
+// Mask for phone number input
+const phoneInput = document.querySelector('#phone');
+Inputmask({mask: "+7 (999) 999-99-99"}).mask(phoneInput);
+
+// Check error on inputs and delete when user types
+const inputs = document.querySelectorAll('#form input');
+inputs.forEach(input => {
+    input.addEventListener('input', () => {
+        input.classList.remove('error');
+        const errorElement = document.querySelector('#error');
+        errorElement.innerHTML = '';
+    });
+})
+
 // Add new contact
+document.querySelector('#add').addEventListener('click', addContact);
+
 function addContact() {
-    document.querySelector('#add').addEventListener('click', (e) => {
-        e.preventDefault();
+    const form = document.querySelector('#form');
+    const formData = new FormData(form);
+    const contactData = Object.fromEntries(formData.entries());
+    const firstLetter = contactData.name.charAt(0).toLowerCase();
 
-        const form = document.querySelector('#form');
-        const formData = new FormData(form);
-        const contactData = Object.fromEntries(formData.entries());
-        const firstLetter = contactData.name.charAt(0).toLowerCase();
-
-        if (checkFormData(contactData)) {
-            addContactToDB(contactData, firstLetter);
-            // TODO: Add success message, reset form and delete error message
-            form.reset();
-        }
-    })
+    if (checkFormData(contactData)) {
+        addContactToDB(contactData, firstLetter);
+        showMessage('success', 'Contact added successfully!');
+        // TODO: Add success message, reset form and delete error message
+        form.reset();
+    }
 }
 
 // Add contact to DB (Local Storage)
@@ -27,7 +42,7 @@ function addContactToDB(contact, firstLetter) {
 
     contacts = sortContactsByAlphabet(contacts);
     localStorage.setItem('contacts', JSON.stringify(contacts));
-    
+
     addContactToTable(contact, firstLetter);
 }
 
@@ -49,7 +64,14 @@ export function addContactToTable(contact, firstLetter) {
 
     let contactInfo = '';
     for (let key in contact) {
-        contactInfo += `${key}: ${contact[key]}<br>`;
+        if (key === 'phone') {
+            contactInfo += `${key}: <b>
+                <a href="tel:${contact[key].replace(/(?!^\+)\D/g, '')}">
+                    ${contact[key]}
+                </a></b><br>`;
+            continue;
+        }
+        contactInfo += `${key}: <b>${contact[key]}</b><br>`;
     }
 
     item.querySelector('.element__contact-text').innerHTML = contactInfo;
@@ -59,61 +81,66 @@ export function addContactToTable(contact, firstLetter) {
 
 // Check form data from inputs
 function checkFormData(data) {
-    let inputCorrectStasus;
+    let inputCorrectStasus = true;
 
     for (let key in data) {
         const value = data[key].trim().toLowerCase();
 
-        // TODO: Change logic to check inputs
-        if (value === '') {
+        if (!value) {
             showFieldError(key, `Field ${key} is empty`);
-            console.error(`Field ${key} is empty`);
             inputCorrectStasus = false;
-        } else if (key === 'phone') {
-            if (!/^\d+$/.test(value)) {
-                showFieldError(key, `Field ${key} must contain only numbers`);
-                console.error(`Field ${key} must contain only numbers`);
-                inputCorrectStasus = false;
-            } else {
-                inputCorrectStasus = true;
-            }
-        } else if (key === 'name' || 'vacancy') {
-            if (!/[a-zA-Z]/gmi.test(value)) {
-                showFieldError(key, `Field ${key} must contain only english letters`);
-                console.error(`Field ${key} must contain only english letters`);
-                inputCorrectStasus = false;
-            } else {
-                inputCorrectStasus = true;
-            }
+        } else if (!checkInputValue(value, key)) {
+            showFieldError(key, `Field ${key} is incorrect`);
+            inputCorrectStasus = false;
         }
     }
 
     return inputCorrectStasus;
-
-    // let inputValue = input.value.trim().toLowerCase();
-    // let inputCorrectStasus;
-    //
-    // if (input.className.includes('phone')) {
-    //     inputCorrectStasus = checkNumericInputValue(input, inputValue);
-    // } else {
-    //     inputCorrectStasus = checkTextInputValue(input, inputValue);
-    // }
-    // return inputCorrectStasus;
 }
 
-// TODO: Split logic to check inputs & show error message
+function checkInputValue(value, fieldType) {
+    let isValid = true;
+
+    if (fieldType === 'phone') {
+        isValid = /^\+?[0-9\s\-()—]{10,20}$/.test(value);
+    } else if (['name', 'vacancy'].includes(fieldType)) {
+        isValid = /^[a-zA-Z\s]+$/.test(value);
+    }
+
+    return isValid;
+}
+
 // Show error on incorrect field
 function showFieldError(field, message) {
-    field = document.querySelector(`#${field}`);
-    field.classList.add('error');
-    const errorElement = document.querySelector('#error');
-    errorElement.classList.add('fadeOut');
+    const fieldElement = document.querySelector(`#${field}`);
+    fieldElement.classList.add('error');
 
-    errorElement.innerHTML += `<br>${message}`;
+    showMessage('error', message);
+}
+
+// Show message in the message block
+function showMessage(type, message) {
+    const messageElement = document.querySelector(`#${type}`);
+    messageElement.classList.add('fadeOut');
+    messageElement.innerHTML += `<br>${message}`;
+
     setTimeout(() => {
-        errorElement.classList.remove('fadeOut');
-        errorElement.innerHTML = '';
+        messageElement.classList.remove('fadeOut');
+        messageElement.innerHTML = '';
     }, 4000);
 }
 
-export default addContact;
+// Clear contacts list from local storage and UI
+document.querySelector('#clear').addEventListener('click', clearContactsList);
+
+function clearContactsList() {
+    localStorage.removeItem('contacts');
+    document.querySelectorAll('.element__contact').forEach(element => {
+        element.remove();
+    });
+}
+
+// All form buttons prevent default action
+document.querySelectorAll('#form button').forEach((button) => {
+    button.addEventListener('click', (event) => event.preventDefault());
+});
