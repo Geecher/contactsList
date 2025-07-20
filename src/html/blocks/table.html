@@ -2,7 +2,7 @@
     <div class="container">
         <div class="table-wrapper">
             <div class="table__column column">
-                <div class = "column__element element"><div data-id = 'a' class="element__letter">A<span class="element__counter">2</span></div></div>
+                <div class = "column__element element"><div data-id = 'a' class="element__letter">A</div></div>
                 <div class = "column__element element"><div data-id = 'b' class="element__letter">B</div></div>
                 <div class = "column__element element"><div data-id = 'c' class="element__letter">C</div></div>
                 <div class = "column__element element"><div data-id = 'd' class="element__letter">D</div></div>
@@ -37,7 +37,15 @@
     <template id="contact">
         <div class="element__contact">
           <span class="element__contact-text"></span>
-          <div class="element__contact-delete"></div>
+          <div class="element__contact-icons">
+            <svg class="element__contact-delete icon icon--delete">
+                <use href="./img/svgsprite/sprite.symbol.svg#delete"></use>
+            </svg>
+            <svg class="element__contact-edit icon icon--edit">
+                <use href="./img/svgsprite/sprite.symbol.svg#edit"></use>
+            </svg>
+          </div>
+
         </div>
       </template>
 </section>

@@ -21,7 +21,7 @@
       }
 
       &.active ~ .element__contact {
-        display: block;
+        display: flex;
       }
     }
 
@@ -29,6 +29,14 @@
       display: none;
       padding: 0.7rem;
       border: 1px solid var(--color-border);
+      justify-content: space-between;
+
+      &-icons {
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+        justify-content: space-between;
+      }
     }
 
   }

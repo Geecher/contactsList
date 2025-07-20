@@ -10,8 +10,8 @@ mobileNav();
     const contacts = JSON.parse(localStorage.getItem('contacts'));
 
     for (let key in contacts) {
-        contacts[key].forEach(element => {
-            addContactToTable(element, key);
+        contacts[key].forEach(contact => {
+            addContactToTable(contact, key);
         });
     }
 })();

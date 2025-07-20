@@ -55,9 +55,7 @@
 				<div class="container">
 					<div class="table-wrapper">
 						<div class="table__column column">
-							<div class="column__element element">
-								<div data-id="a" class="element__letter">A<span class="element__counter">2</span></div>
-							</div>
+							<div class="column__element element"><div data-id="a" class="element__letter">A</div></div>
 							<div class="column__element element"><div data-id="b" class="element__letter">B</div></div>
 							<div class="column__element element"><div data-id="c" class="element__letter">C</div></div>
 							<div class="column__element element"><div data-id="d" class="element__letter">D</div></div>
@@ -91,10 +89,29 @@
 				<template id="contact">
 					<div class="element__contact">
 						<span class="element__contact-text"></span>
-						<div class="element__contact-delete"></div>
+						<div class="element__contact-icons">
+							<svg class="element__contact-delete icon icon--delete">
+								<use href="./img/svgsprite/sprite.symbol.svg#delete"></use>
+							</svg>
+							<svg class="element__contact-edit icon icon--edit">
+								<use href="./img/svgsprite/sprite.symbol.svg#edit"></use>
+							</svg>
+						</div>
 					</div>
 				</template>
 			</section>
+			<div id="edit-modal" class="modal hidden">
+				<div class="modal-content">
+					<h2>Редактировать контакт</h2>
+					<form id="edit-form">
+						<input type="text" name="name" id="edit-name" placeholder="Name" required />
+						<input type="text" name="vacancy" id="edit-vacancy" placeholder="Vacancy" required />
+						<input type="tel" name="phone" id="edit-phone" placeholder="Phone +7 (999) 999-99-99" required />
+						<button type="submit" id="save-edit">Сохранить</button>
+						<button type="button" id="cancel-edit">Отмена</button>
+					</form>
+				</div>
+			</div>
 		</main>
 		<footer class="footer">
 			<div class="container">
