@@ -7,7 +7,7 @@ function addContact() {
     const form = document.querySelector('#form');
     const formData = new FormData(form);
     const contactData = Object.fromEntries(formData.entries());
-    const firstLetter = contactData.name.charAt(0).toLowerCase();
+    const firstLetter = contactData.name.trim().charAt(0).toLowerCase();
 
     if (checkFormData(contactData)) {
         contactData.id = generateUniqueId();
@@ -98,12 +98,63 @@ function deleteContactById(contactId) {
         const index = contacts[letter].findIndex(contact => contact.id === contactId);
         if (index !== -1) {
             contacts[letter].splice(index, 1);
-            //TODO: setItem to function where contacts is sorted
             localStorage.setItem('contacts', JSON.stringify(contacts));
             return true;
         }
     }
     return false;
+}
+
+// Open search modal
+document.addEventListener('click', (event) => {
+    const searchButton = event.target.closest('#search');
+    if (searchButton) {
+        openModal('search-modal');
+        const searchInput = document.querySelector('#search-input');
+        searchInput.value = '';
+        searchInput.focus();
+    }
+})
+
+// Show all contacts in search modal
+document.querySelector('#show-all').addEventListener('click', () => {
+    generateSearchResults();
+})
+
+// Search contacts
+document.querySelector('#search-input').addEventListener('input', (event) => {
+    const searchValue = event.target.value.trim().toLowerCase();
+
+    if (searchValue) generateSearchResults(searchValue);
+});
+
+// Generate search results
+// TODO: Generate search results by search value
+function generateSearchResults(searchValue) {
+    const contacts = JSON.parse(localStorage.getItem('contacts')) || {};
+    const searchResultsElement = document.querySelector('#search-results');
+    searchResultsElement.innerHTML = '';
+    for (let letter in contacts) {
+        contacts[letter].forEach(contact => {
+            const contactElement = document.createElement('div');
+            contactElement.classList.add('element__contact');
+            contactElement.dataset.index = contact.id;
+            contactElement.innerHTML = `
+                <span class="element__contact-text">
+                    ${generateContactHTML(contact)}
+                </span>
+                <div class="element__contact-icons">
+                    <svg class="element__contact-delete icon icon--delete">
+                        <use href="./img/svgsprite/sprite.symbol.svg#delete"></use>
+                    </svg>
+                    <svg class="element__contact-edit icon icon--edit">
+                        <use href="./img/svgsprite/sprite.symbol.svg#edit"></use>
+                    </svg>
+                </div>
+            `;
+            searchResultsElement.appendChild(contactElement);
+        })
+    }
 }
 
 // Open edit modal
@@ -187,14 +238,28 @@ document.querySelector('#save-edit').addEventListener('click', (event) => {
 });
 
 
-// Закрытие модального окна
+// Close modal by ID
 function closeModal(modalId) {
     const modal = document.querySelector(`#${modalId}`);
     modal.classList.add('hidden');
+
+    if (modalId === 'edit-modal') {
+        const form = document.querySelector('#edit-form');
+        form.reset();
+        form.removeAttribute('data-contact-id');
+    }
+    if (modalId === 'search-modal') {
+        const searchResults = document.querySelector('#search-results');
+        searchResults.innerHTML = '';
+    }
 }
 
 // Close edit modal
 document.querySelector('#cancel-edit').addEventListener('click', () => closeModal('edit-modal'));
+
+// Close search modal
+document.querySelector('#cancel-search').addEventListener('click', () => closeModal('search-modal'));
+
 
 // Generate HTML for contact information
 function generateContactHTML(contact) {
@@ -217,23 +282,21 @@ function generateContactHTML(contact) {
 function updateContactById(contactId, updatedData) {
     let contacts = JSON.parse(localStorage.getItem('contacts')) || {};
     let contactFound = false;
+    let oldFirstLetter = '';
 
     for (let letter in contacts) {
         const index = contacts[letter].findIndex(contact => contact.id === contactId);
         if (index !== -1) {
             const oldContact = contacts[letter][index];
-            const oldFirstLetter = oldContact.name.charAt(0).toLowerCase();
+            oldFirstLetter = oldContact.name.charAt(0).toLowerCase();
             const newFirstLetter = updatedData.name.charAt(0).toLowerCase();
-            console.log(`Updating contact: ${oldContact.name} (${oldFirstLetter}) to ${updatedData.name} (${newFirstLetter})`);
 
             const contactElement = document.querySelector(`[data-index="${contactId}"]`);
 
-            // TODO: Problem with first letter counter, dont update when contact is moved to another letter
             if (oldFirstLetter !== newFirstLetter) {
                 // Delete contact from old letter
                 contacts[letter].splice(index, 1);
                 contactElement.remove();
-                updateElementCounter(oldFirstLetter);
 
                 // Add contact to new letter
                 if (!contacts[newFirstLetter]) {
@@ -254,12 +317,14 @@ function updateContactById(contactId, updatedData) {
 
     if (contactFound) {
         localStorage.setItem('contacts', JSON.stringify(contacts));
+        updateElementCounter(oldFirstLetter);
         return true;
     }
     return false;
 }
 
 // Check form data from inputs
+// TODO: Check equals data
 function checkFormData(data) {
     let inputCorrectStasus = true;
 

@@ -16,8 +16,48 @@
   background: #fff;
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
+  width: 94%;
+  max-width: 750px;
   text-align: center;
+}
+
+.modal#edit-modal {
+  z-index: 1001;
+}
+
+.search-result {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-self: normal;
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+
+    & .element__contact {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.7rem;
+        border-bottom: 1px solid var(--color-border);
+        text-align: start;
+    }
+
+    & .element__contact-icons {
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    & .element__contact:nth-child(n + 1) {
+      border-right: 1px solid var(--color-border);
+    }
+
+    // TODO Fix the pre last child border issue
+    & .element__contact:last-child,
+    & .element__contact:nth-last-child(2):not(:nth-child(n + 1)) {
+      border-bottom: none;
+    }
 }
 
 .hidden {
