@@ -1,6 +1,6 @@
-// Мобильная навигация
-import mobileNav from './modules/mobile-nav.js';
-import {addContactToTable, generateContactHTML, updateElementCounter} from './modules/table.js';
+// Mobile navigation
+import mobileNav from './modules/mobile-nav';
+import {addContactToTable, generateContactHTML, updateElementCounter} from './modules/table.ts';
 import Inputmask from "inputmask";
 
 mobileNav();

@@ -14,8 +14,16 @@ const config = {
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
 			},
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
 		],
 	},
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
+    },
 };
 
 module.exports = config;

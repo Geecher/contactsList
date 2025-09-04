@@ -219,6 +219,16 @@ gulp.task('files:docs', function () {
 		.pipe(gulp.dest('./docs/files/'));
 });
 
+const ts = require('gulp-typescript');
+
+gulp.task('ts:docs', function () {
+    return gulp
+        .src('./src/js/**/*.ts')
+        .pipe(plumber(plumberNotify('TS')))
+        .pipe(ts({ noImplicitAny: true, outDir: './docs/js/', target: 'ES6' }))
+        .pipe(gulp.dest('./docs/js/'));
+});
+
 gulp.task('js:docs', function () {
 	return gulp
 		.src('./src/js/*.js')

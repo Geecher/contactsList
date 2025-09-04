@@ -201,6 +201,17 @@ gulp.task('files:dev', function () {
 		.pipe(gulp.dest('./build/files/'));
 });
 
+const gulpTypescript = require('gulp-typescript');
+const tsProject = gulpTypescript.createProject('tsconfig.json');
+
+gulp.task('ts:dev', function () {
+	return tsProject
+		.src()
+		.pipe(plumber(plumberNotify('TS')))
+		.pipe(gulpTypescript(tsProject))
+		.pipe(gulp.dest('./build/js/'));
+});
+
 gulp.task('js:dev', function () {
 	return gulp
 		.src('./src/js/*.js')
@@ -229,6 +240,7 @@ gulp.task('watch:dev', function () {
 	gulp.watch('./src/img/**/*', gulp.parallel('images:dev'));
 	gulp.watch('./src/files/**/*', gulp.parallel('files:dev'));
 	gulp.watch('./src/js/**/*.js', gulp.parallel('js:dev'));
+	gulp.watch('./src/js/**/*.ts', gulp.parallel('ts:dev'));
 	gulp.watch(
 		'./src/img/svgicons/*',
 		gulp.series('svgStack:dev', 'svgSymbol:dev')
