@@ -1,3 +1,5 @@
+import { getElement } from "../utils";
+// Toggle active class on letter elements
 let letters = document.querySelectorAll('.element__letter');
 letters.forEach((element) => {
     element.addEventListener('click', (e) => {
@@ -9,18 +11,12 @@ letters.forEach((element) => {
 // Add a contact to the table
 export function addContactToTable(contact, firstLetter) {
     const letterElement = getElement(`[data-id="${firstLetter}"]`);
-    if (!letterElement)
-        return;
     const template = getElement('#contact');
-    if (!template)
-        throw new Error('Template not found');
     const item = template.content.cloneNode(true);
     const contactElem = item.querySelector('.element__contact');
     const contactTextElem = item.querySelector('.element__contact-text');
-    if (contactElem)
-        contactElem.dataset.index = contact.id;
-    if (contactTextElem)
-        contactTextElem.innerHTML = generateContactHTML(contact);
+    contactElem.dataset.index = contact.id;
+    contactTextElem.innerHTML = generateContactHTML(contact);
     letterElement.after(item);
     updateElementCounter(firstLetter);
 }
@@ -45,8 +41,6 @@ export function generateContactHTML(contact) {
 // Update element counter for contacts
 export function updateElementCounter(firstLetter) {
     const letterElement = getElement(`[data-id="${firstLetter}"]`);
-    if (!letterElement)
-        return;
     const counterElement = letterElement.querySelector('.element__counter');
     const contactsRaw = localStorage.getItem('contacts');
     const contacts = contactsRaw ? JSON.parse(contactsRaw) : {};
@@ -65,7 +59,4 @@ export function updateElementCounter(firstLetter) {
         newCounter.textContent = count.toString();
         letterElement.appendChild(newCounter);
     }
-}
-function getElement(selector) {
-    return document.querySelector(selector);
 }

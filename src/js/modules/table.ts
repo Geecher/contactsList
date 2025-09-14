@@ -1,5 +1,7 @@
 import {Contact} from '../types';
+import {getElement} from "../utils";
 
+// Toggle active class on letter elements
 let letters = document.querySelectorAll('.element__letter');
 
 letters.forEach((element) => {
@@ -10,21 +12,17 @@ letters.forEach((element) => {
     })
 });
 
-
-
 // Add a contact to the table
 export function addContactToTable(contact: Contact, firstLetter: string) {
     const letterElement = getElement<HTMLElement>(`[data-id="${firstLetter}"]`);
-    if (!letterElement) return;
     const template = getElement<HTMLTemplateElement>('#contact');
-    if (!template) throw new Error('Template not found');
 
-    const item = template.content.cloneNode(true) as DocumentFragment;
+    const item = template.content.cloneNode(true) as HTMLElement;
 
-    const contactElem = item.querySelector('.element__contact') as HTMLElement | null;
-    const contactTextElem = item.querySelector('.element__contact-text') as HTMLElement | null;
-    if (contactElem) contactElem.dataset.index = contact.id;
-    if (contactTextElem) contactTextElem.innerHTML = generateContactHTML(contact);
+    const contactElem = item.querySelector('.element__contact') as HTMLElement;
+    const contactTextElem = item.querySelector('.element__contact-text') as HTMLElement;
+    contactElem.dataset.index = contact.id;
+    contactTextElem.innerHTML = generateContactHTML(contact);
 
     letterElement.after(item);
 
@@ -51,8 +49,7 @@ export function generateContactHTML(contact: Contact) {
 // Update element counter for contacts
 export function updateElementCounter(firstLetter: string): void {
     const letterElement = getElement<HTMLElement>(`[data-id="${firstLetter}"]`);
-    if (!letterElement) return;
-    const counterElement = letterElement.querySelector('.element__counter') as HTMLElement | null;
+    const counterElement = letterElement.querySelector('.element__counter');
 
     const contactsRaw = localStorage.getItem('contacts');
     const contacts: Record<string, Contact[]> = contactsRaw ? JSON.parse(contactsRaw) : {};
@@ -70,8 +67,4 @@ export function updateElementCounter(firstLetter: string): void {
         newCounter.textContent = count.toString();
         letterElement.appendChild(newCounter);
     }
-}
-
-function getElement<T extends HTMLElement>(selector: string): T | null {
-    return document.querySelector(selector) as T | null;
 }

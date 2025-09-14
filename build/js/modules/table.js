@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addContactToTable = addContactToTable;
 exports.generateContactHTML = generateContactHTML;
 exports.updateElementCounter = updateElementCounter;
+const utils_1 = require("../utils");
+// Toggle active class on letter elements
 let letters = document.querySelectorAll('.element__letter');
 letters.forEach((element) => {
     element.addEventListener('click', (e) => {
@@ -13,19 +15,13 @@ letters.forEach((element) => {
 });
 // Add a contact to the table
 function addContactToTable(contact, firstLetter) {
-    const letterElement = getElement(`[data-id="${firstLetter}"]`);
-    if (!letterElement)
-        return;
-    const template = getElement('#contact');
-    if (!template)
-        throw new Error('Template not found');
+    const letterElement = (0, utils_1.getElement)(`[data-id="${firstLetter}"]`);
+    const template = (0, utils_1.getElement)('#contact');
     const item = template.content.cloneNode(true);
     const contactElem = item.querySelector('.element__contact');
     const contactTextElem = item.querySelector('.element__contact-text');
-    if (contactElem)
-        contactElem.dataset.index = contact.id;
-    if (contactTextElem)
-        contactTextElem.innerHTML = generateContactHTML(contact);
+    contactElem.dataset.index = contact.id;
+    contactTextElem.innerHTML = generateContactHTML(contact);
     letterElement.after(item);
     updateElementCounter(firstLetter);
 }
@@ -49,9 +45,7 @@ function generateContactHTML(contact) {
 }
 // Update element counter for contacts
 function updateElementCounter(firstLetter) {
-    const letterElement = getElement(`[data-id="${firstLetter}"]`);
-    if (!letterElement)
-        return;
+    const letterElement = (0, utils_1.getElement)(`[data-id="${firstLetter}"]`);
     const counterElement = letterElement.querySelector('.element__counter');
     const contactsRaw = localStorage.getItem('contacts');
     const contacts = contactsRaw ? JSON.parse(contactsRaw) : {};
@@ -70,7 +64,4 @@ function updateElementCounter(firstLetter) {
         newCounter.textContent = count.toString();
         letterElement.appendChild(newCounter);
     }
-}
-function getElement(selector) {
-    return document.querySelector(selector);
 }
